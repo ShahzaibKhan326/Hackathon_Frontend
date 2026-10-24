@@ -1,0 +1,228 @@
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f7fb;
+  color: #1e293b;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: #172554;
+  color: white;
+  padding: 28px 18px;
+}
+
+.sidebar h2 {
+  margin-bottom: 35px;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar a {
+  color: #dbeafe;
+  text-decoration: none;
+  padding: 13px;
+  border-radius: 8px;
+}
+
+.sidebar a:hover {
+  background: #1e40af;
+  color: white;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  padding: 30px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.topbar h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.topbar p,
+.welcome p,
+.activity p {
+  color: #64748b;
+}
+
+.admin-badge {
+  background: #dbeafe;
+  color: #1d4ed8;
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.welcome {
+  background: white;
+  padding: 28px;
+  border-radius: 14px;
+  margin-bottom: 25px;
+  border: 1px solid #e2e8f0;
+}
+
+.welcome h2 {
+  margin-bottom: 10px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.stat-card,
+.activity {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.stat-card p {
+  color: #64748b;
+  margin-bottom: 16px;
+}
+
+.stat-card h2 {
+  font-size: 30px;
+}
+
+.activity h2 {
+  margin-bottom: 12px;
+}
+
+@media (max-width: 900px) {
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 18px;
+  }
+
+  .sidebar h2 {
+    margin-bottom: 15px;
+  }
+
+  .sidebar nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .sidebar a {
+    padding: 9px;
+    font-size: 13px;
+  }
+
+  .main-content {
+    padding: 18px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ----------- */
+
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #eff6ff;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 35px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 35px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.login-card h1 {
+  color: #172554;
+  text-align: center;
+}
+
+.login-card > p {
+  color: #64748b;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.login-card label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.login-card input {
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.login-card button {
+  margin-top: 10px;
+  padding: 13px;
+  border: none;
+  border-radius: 8px;
+  background: #1d4ed8;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-card button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.login-card .login-error {
+  color: #dc2626;
+  font-size: 14px;
+}
