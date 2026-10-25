@@ -1,68 +1,58 @@
+import React, { useState } from 'react';
+import { request } from '../api/client';
+import { input, btnPrimary } from '../components/styles';
+import { Field } from '../components/Field';
 
-import { useState } from "react";
-import { loginUser } from "../api/auth";
+export function Login({ onLogin }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [show, setShow] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setError("");
-    setLoading(true);
-
+  const submit = async (e) => {
+    e.preventDefault();
+    setBusy(true);
+    setError('');
     try {
-      const data = await loginUser({ email, password });
-
-      if (!data.token) {
-        throw new Error("Login response did not include a token");
-      }
-
-      localStorage.setItem("token", data.token);
-      window.location.href = "/";
+      const data = await request('/auth/login', { method: 'POST', body: { email: email.trim(), password } });
+      onLogin(data.token, data.user);
     } catch (err) {
-      setError(err.message || "Unable to login");
+      setError(err.message);
     } finally {
-      setLoading(false);
+      setBusy(false);
     }
-  }
+  };
 
   return (
-    <div className="login-page">
-      <form className="login-card" onSubmit={handleSubmit}>
-        <h1>HCM Lite</h1>
-        <p>Sign in to your account</p>
-
-        <label htmlFor="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          placeholder="admin@hcm.com"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          required
-        />
-
-        <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          placeholder="Enter password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          required
-        />
-
-        {error && <p className="login-error">{error}</p>}
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Signing in..." : "Sign In"}
-        </button>
-      </form>
+    <div className="grid min-h-screen lg:grid-cols-2">
+      <div className="hidden flex-col justify-between bg-teal-950 p-12 text-teal-50 lg:flex">
+        <div className="text-lg font-semibold tracking-tight">HCM Lite</div>
+        <div>
+          <h1 className="max-w-md text-4xl font-semibold leading-tight">Your people, their time, their pay: in one place.</h1>
+          <p className="mt-4 max-w-sm text-teal-200/80">Track attendance, approve leave and run payroll without switching tools.</p>
+        </div>
+        <p className="text-sm text-teal-200/60">The server may take up to 30 seconds to wake on first sign in.</p>
+      </div>
+      <div className="flex items-center justify-center bg-slate-50 p-6">
+        <form onSubmit={submit} className="w-full max-w-sm space-y-5">
+          <div>
+            <h2 className="text-2xl font-semibold text-slate-900">Sign in</h2>
+            <p className="mt-1 text-sm text-slate-500">Use your work email and password.</p>
+          </div>
+          {error && <div role="alert" className="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700 ring-1 ring-rose-200">{error}</div>}
+          <Field label="Email">
+            <input className={input} type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@company.com" />
+          </Field>
+          <Field label="Password">
+            <div className="relative">
+              <input className={`${input} pr-16`} type={show ? 'text' : 'password'} required autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <button type="button" onClick={() => setShow(!show)} className="absolute inset-y-0 right-3 text-xs font-medium text-slate-500 hover:text-slate-800">{show ? 'Hide' : 'Show'}</button>
+            </div>
+          </Field>
+          <button className={`${btnPrimary} w-full py-2.5`} disabled={busy}>{busy ? 'Signing in… server may be waking up' : 'Sign in'}</button>
+        </form>
+      </div>
     </div>
   );
 }
-
-export default Login;
